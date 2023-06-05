@@ -10,7 +10,6 @@ namespace
         if (first == second){
             return false;
         }
-
         const auto calcDistance = [](const size_t pos1, size_t pos2){
             int distance = static_cast<int>(pos1);
             distance -= static_cast<int>(pos2);
