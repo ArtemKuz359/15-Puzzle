@@ -70,10 +70,10 @@ QVariant GameBoard::data(const QModelIndex &index,int role) const
 
 void GameBoard::shuffle()
 {
-    static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    static auto seed = ::chrono::system_clock::now().time_since_epoch().count();
     static std::mt19937 generator(seed);
 
-    std::shuffle(m_rawBoard.begin(), m_rawBoard.end() , generator);
+    ::shuffle(m_rawBoard.begin(), m_rawBoard.end() , generator);
 }
 
 bool GameBoard::move(int index)
