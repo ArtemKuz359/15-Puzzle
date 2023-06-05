@@ -93,7 +93,7 @@ bool GameBoard::move(int index)
     }
     swap(hiddenElementIterator->value, m_rawBoard[index].value);
 
-    emit dataChanged(createIndex(0,0), createIndex(m_boardSize,0));
+    
     return true;
 
 }
