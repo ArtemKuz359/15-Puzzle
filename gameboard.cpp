@@ -155,7 +155,6 @@ size_t GameBoard::boardSize() const
 void GameBoard::start()
 {
     shuffle();
-    // Дополнительная логика для начала игры, если она вам нужна
 }
 
 size_t GameBoard::dimension() const
