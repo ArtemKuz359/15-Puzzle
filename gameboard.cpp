@@ -3,8 +3,7 @@
 #include <algorithm>
 #include <numeric>
 
-namespace
-{
+
     bool isAdjacent(const GameBoard::Position first, const GameBoard::Position second)
     {
         if (first == second){
@@ -32,7 +31,7 @@ namespace
         }
         return result;
     }
-}
+
 
 using namespace std;
 
