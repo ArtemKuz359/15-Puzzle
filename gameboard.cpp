@@ -2,38 +2,37 @@
 #include <random>
 #include <algorithm>
 #include <numeric>
+using namespace std;
 
 
-    bool isAdjacent(const GameBoard::Position first, const GameBoard::Position second)
-    {
-        if (first == second){
-            return false;
-        }
-        const auto calcDistance = [](const size_t pos1, size_t pos2){
-            int distance = static_cast<int>(pos1);
-            distance -= static_cast<int>(pos2);
-            distance = abs(distance);
-            return distance;
-        };
-        bool result {false};
-
-        if(first.first == second.first){
-            int distance = calcDistance(first.second, second.second);
-            if(distance == 1){
-                result = true;
-            }
-        } else if (first.second == second.second){
-            int distance = calcDistance(first.first, second.first);
-            if(distance == 1){
-                result = true;
-            }
-
-        }
-        return result;
+bool isAdjacent(const GameBoard::Position first, const GameBoard::Position second)
+{
+    if (first == second){
+        return false;
     }
 
+    const auto calcDistance = [](const size_t pos1, size_t pos2){
+        int distance = static_cast<int>(pos1);
+        distance -= static_cast<int>(pos2);
+        distance = abs(distance);
+        return distance;
+    };
+    bool result {false};
 
-using namespace std;
+    if(first.first == second.first){
+        int distance = calcDistance(first.second, second.second);
+        if(distance == 1){
+            result = true;
+        }
+    } else if (first.second == second.second){
+        int distance = calcDistance(first.first, second.first);
+        if(distance == 1){
+            result = true;
+        }
+
+    }
+    return result;
+}
 
 GameBoard::GameBoard(QObject *parent, const size_t boardDimension)
     : QAbstractListModel{parent},
@@ -59,7 +58,7 @@ QVariant GameBoard::data(const QModelIndex &index,int role) const
     {
         return {};
     }
-    const int rowIndex {index.row()};
+    const int rowIndex = index.row();
 
     if(!isPositionValid(rowIndex)){
         return{};
@@ -70,10 +69,111 @@ QVariant GameBoard::data(const QModelIndex &index,int role) const
 void GameBoard::shuffle()
 {
     static auto seed = ::chrono::system_clock::now().time_since_epoch().count();
-    static std::mt19937 generator(seed);
+    static ::mt19937 generator(seed);
 
-    ::shuffle(m_rawBoard.begin(), m_rawBoard.end() , generator);
+    ::shuffle(m_rawBoard.begin(), m_rawBoard.end(), generator);
+
+    if (m_dimension == 3)
+    {
+        vector<vector<int>> unsolvableConfigs{
+            {1, 2, 3, 4, 5, 6, 8, 7, 9},
+            {1, 2, 3, 4, 5, 6, 7, 9, 8},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9},
+            {1, 2, 3, 4, 5, 6, 8, 9, 7},
+            {1, 2, 3, 4, 5, 6, 9, 7, 8},
+            {1, 2, 3, 4, 5, 6, 9, 8, 7}
+        };
+
+        for (const auto& unsolvableConfig : unsolvableConfigs)
+        {
+            vector<size_t> unsolvableConfigTiles(unsolvableConfig.begin(), unsolvableConfig.end());
+            bool match = true;
+
+            for (size_t i = 0; i < m_boardSize; ++i)
+            {
+                if (m_rawBoard[i].value != unsolvableConfigTiles[i])
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                shuffle();
+            }
+             return;
+        }
+    }
+    else if (m_dimension == 4)
+    {
+        vector<vector<int>> unsolvableConfigs{
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14, 16},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 14},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 15},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, 15},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 15},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
+        };
+
+        for (const auto& unsolvableConfig : unsolvableConfigs)
+        {
+            vector<size_t> unsolvableConfigTiles(unsolvableConfig.begin(), unsolvableConfig.end());
+            bool match = true;
+
+            for (size_t i = 0; i < m_boardSize; ++i)
+            {
+                if (m_rawBoard[i].value != unsolvableConfigTiles[i])
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                shuffle();
+            }
+             return;
+        }
+    }
+    else if (m_dimension == 5)
+    {
+        vector<vector<int>> unsolvableConfigs{
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 24},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 23},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 25, 23, 24},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 22, 25, 24},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 23, 25, 22},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 22, 25, 23}
+
+        };
+
+        for (const auto& unsolvableConfig : unsolvableConfigs)
+        {
+            vector<size_t> unsolvableConfigTiles(unsolvableConfig.begin(), unsolvableConfig.end());
+            bool match = true;
+
+            for (size_t i = 0; i < m_boardSize; ++i)
+            {
+                if (m_rawBoard[i].value != unsolvableConfigTiles[i])
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                shuffle();
+            }
+             return;
+        }
+    }
 }
+
+
+
 
 bool GameBoard::move(int index)
 {
@@ -93,9 +193,8 @@ bool GameBoard::move(int index)
     }
     swap(hiddenElementIterator->value, m_rawBoard[index].value);
 
-    
-    return true;
 
+    return true;
 }
 
 GameBoard::Position GameBoard::getRowCol(size_t index) const
@@ -117,7 +216,6 @@ void GameBoard::setBoardSize(int newSize)
     {
         return;
     }
-
     m_dimension = newSize;
     m_boardSize = m_dimension * m_dimension;
     m_rawBoard.resize(m_boardSize);
@@ -135,10 +233,10 @@ bool GameBoard::isBoardValid() const
         }
     }
 
-    const size_t start_point = 1;
+
     for (size_t i = 0; i < m_boardSize; ++i) {
         if (m_rawBoard[i].value == m_boardSize) {
-            inv += start_point + i / m_dimension;
+            inv++;
         }
     }
 
@@ -153,6 +251,7 @@ size_t GameBoard::boardSize() const
 void GameBoard::start()
 {
     shuffle();
+
 }
 
 size_t GameBoard::dimension() const
