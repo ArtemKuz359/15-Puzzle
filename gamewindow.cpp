@@ -131,7 +131,7 @@ void GameWindow::updateGameBoard()
         m_timer->stop();
         m_timeLabel->setText("YOU WON!");
 
-        // Adjust the width of the time label to fit the "YOU WON" text
+      
         QFontMetrics fontMetrics(m_timeLabel->font());
         QRect boundingRect = fontMetrics.boundingRect("YOU WON!");
         int textWidth = boundingRect.width();
