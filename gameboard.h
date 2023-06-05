@@ -33,7 +33,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     size_t dimension() const;
 
-    Q_INVOKABLE bool move(int index);
+    bool move(int index);
     using Position = pair<size_t,size_t>;
     size_t boardSize() const;
     Position getRowCol(size_t index) const;
