@@ -13,7 +13,6 @@ GameWindow::GameWindow(GameBoard* gameboard, QWidget* parent)
       m_timeLabel(new QLabel(this)), m_elapsedTime(0, 0, 0),
       m_timer(new QTimer(this))
 {
-
     QPushButton* exitButton = new QPushButton("EXIT", this);
     connect(exitButton, &QPushButton::clicked, this, &GameWindow::onExitButtonClicked);
     exitButton->setMinimumSize(100,50);
