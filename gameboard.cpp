@@ -78,7 +78,7 @@ void GameBoard::shuffle()
 
 bool GameBoard::move(int index)
 {
-    if(!isPositionValid(static_cast<size_t>(index))){
+    if(!isPositionValid((index))){
         return false;
     }
 
